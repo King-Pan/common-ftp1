@@ -32,7 +32,6 @@ public class FtpDownloadFileFilter implements GenericFileFilter<Object> {
      */
     @Override
     public boolean accept(GenericFile<Object> file) {
-        System.out.println(file.getFileName());
-        return file.getFileName().endsWith(".tar") || file.isDirectory();
+        return file.getFileName().endsWith(".tar") || file.getFileName().startsWith("20181230");
     }
 }
