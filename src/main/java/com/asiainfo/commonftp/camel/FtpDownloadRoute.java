@@ -1,11 +1,14 @@
 package com.asiainfo.commonftp.camel;
 
+import com.asiainfo.commonftp.util.DownLoadUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.camel.LoggingLevel;
 import org.apache.camel.builder.RouteBuilder;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import java.io.File;
 import java.net.InetAddress;
 
 /**
@@ -26,26 +29,13 @@ public class FtpDownloadRoute extends RouteBuilder {
 
     private boolean isStart = true;
 
+    @Autowired
+    private TarProcessor tarProcessor;
+
     @Override
     public void configure() throws Exception {
-        from(ftpUri).to("file:" + localDir).process(new TarProcessor()).process(new SyncSftpProcessor())
+
+        from(ftpUri).to("file:" + localDir).process(tarProcessor).process(new SyncSftpProcessor())
                 .log(LoggingLevel.INFO, log, "download file ${file:name} complete.");
     }
-
-    /**
-     * 判断是否为执行任务的主机
-     *
-     * @author sunk
-     */
-    private boolean isExecHost() {
-        String hostName = "";
-        try {
-            hostName = InetAddress.getLocalHost().getHostName();
-        } catch (Exception e) {
-            log.error("get hostname fail !", e);
-            return false;
-        }
-        return true;
-    }
-
 }

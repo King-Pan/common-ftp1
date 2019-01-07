@@ -10,6 +10,7 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.util.List;
 
 /**
  * @author king-pan
@@ -22,12 +23,32 @@ public class TarTest {
 
     @Test
     public void test() throws Exception {
-        File srcFile = new File("D:\\TestData\\sunknew\\sftp\\data\\20181230\\day\\music\\i_10000_20181230_IOP-96000_00_001.tar");
+        File srcFile = new File("D:\\TestData\\sunknew\\sftp\\data\\20190106\\day\\music\\i_10000_20190106_IOP-96000_00_001.tar");
         System.out.println(srcFile.getAbsolutePath());
 //        TarArchiveInputStream tais = new TarArchiveInputStream(
 //                new FileInputStream(srcFile));
-        TarUtil.dearchive(srcFile.getAbsolutePath(), "d:/fds");
+        TarUtil.dearchive(srcFile.getAbsolutePath(), "d:/fds2");
 
 
+    }
+
+
+    @Test
+    public void testFile(){
+        File srcFile = new File("D:\\TestData\\sunknew\\sftp\\data\\20190106\\day\\music\\i_10000_20190106_IOP-96000_00_001.tar");
+        System.out.println(srcFile.getName());
+        System.out.println(srcFile.getAbsolutePath());
+    }
+
+
+    @Test
+    public void testTar2(){
+        File tarFile = new File("D:\\TestData\\sunknew\\sftp\\data\\20190106\\day\\music\\i_10000_20190106_IOP-96000_00_001.tar");
+        String tmpPath = "D:\\TestData\\sunknew\\sftp\\tmp";
+        try {
+            List<File> fileList = TarUtil.dearchive(tarFile, tmpPath);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -1,17 +1,15 @@
 package com.asiainfo.commonftp.camel;
 
+import club.javalearn.date.utils.DateUtil;
+import com.asiainfo.commonftp.entity.FileInfo;
+import com.asiainfo.commonftp.util.DownLoadUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.camel.component.file.GenericFile;
 import org.apache.camel.component.file.GenericFileFilter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Calendar;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.io.File;
 
 /**
  * @author king-pan
@@ -25,6 +23,9 @@ public class FtpDownloadFileFilter implements GenericFileFilter<Object> {
     @Value("${ftp.local.data.dir}")
     private String localDir;
 
+    @Value("${ftp.allDownload}")
+    private Boolean allDownload;
+
     /**
      * 过滤下载文件
      *
@@ -32,6 +33,31 @@ public class FtpDownloadFileFilter implements GenericFileFilter<Object> {
      */
     @Override
     public boolean accept(GenericFile<Object> file) {
-        return file.getFileName().endsWith(".tar") || file.getFileName().startsWith("20181230");
+        if (null == DownLoadUtil.INFOS.get()) {
+            FileInfo fileInfo = new FileInfo();
+            DownLoadUtil.INFOS.set(fileInfo);
+        }
+        String localFilePath = localDir + "/" + file.getFileName();
+        log.info("文件名称:{},文件类型:{},目录:{}", file.getFileName(), file.getFile().getClass().getName(), file.isDirectory() ? "是" : "否");
+
+        //如果设置全量下载，则直接返回true
+        if (allDownload) {
+            return true;
+        }
+        if (file.isDirectory() && file.getFileName().startsWith(DateUtil.getLastMonday())) {
+            return true;
+        } else {
+            File localFile = new File(localFilePath);
+            //本地如果存在准备下载的文件，则不下载
+            if (localFile.exists()) {
+                return false;
+            }
+
+            boolean flag = file.getFileName().endsWith(".tar") && file.getFileName().startsWith(DateUtil.getLastMonday());
+            if (flag) {
+
+            }
+            return flag;
+        }
     }
 }
