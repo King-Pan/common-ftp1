@@ -35,7 +35,8 @@ public class FtpDownloadRoute extends RouteBuilder {
     @Override
     public void configure() throws Exception {
 
-        from(ftpUri).to("file:" + localDir).process(tarProcessor).process(new SyncSftpProcessor())
+        from(ftpUri).to("file:c:/TestData/sunknew/sftp/data").process(tarProcessor)
+                //.process(new SyncSftpProcessor())
                 .log(LoggingLevel.INFO, log, "download file ${file:name} complete.");
     }
 }

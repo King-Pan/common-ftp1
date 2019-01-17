@@ -33,10 +33,6 @@ public class FtpDownloadFileFilter implements GenericFileFilter<Object> {
      */
     @Override
     public boolean accept(GenericFile<Object> file) {
-        if (null == DownLoadUtil.INFOS.get()) {
-            FileInfo fileInfo = new FileInfo();
-            DownLoadUtil.INFOS.set(fileInfo);
-        }
         String localFilePath = localDir + "/" + file.getFileName();
         log.info("文件名称:{},文件类型:{},目录:{}", file.getFileName(), file.getFile().getClass().getName(), file.isDirectory() ? "是" : "否");
 
@@ -55,7 +51,7 @@ public class FtpDownloadFileFilter implements GenericFileFilter<Object> {
 
             boolean flag = file.getFileName().endsWith(".tar") && file.getFileName().startsWith(DateUtil.getLastMonday());
             if (flag) {
-
+                flag = true;
             }
             return flag;
         }

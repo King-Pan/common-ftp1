@@ -6,6 +6,8 @@ import org.apache.camel.LoggingLevel;
 import org.apache.camel.Processor;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.main.Main;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.util.List;
@@ -16,7 +18,10 @@ import java.util.List;
  * @Description ${DESCRIPTION}
  */
 @Slf4j
+@Component
 public class SyncSftpProcessor implements Processor {
+
+
     @Override
     public void process(Exchange exchange) throws Exception {
         log.info("开始同步");
