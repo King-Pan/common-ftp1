@@ -1,15 +1,11 @@
 package com.asiainfo.commonftp.camel;
 
-import com.asiainfo.commonftp.util.DownLoadUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.camel.LoggingLevel;
 import org.apache.camel.builder.RouteBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-
-import java.io.File;
-import java.net.InetAddress;
 
 /**
  * @author king-pan
@@ -21,6 +17,10 @@ import java.net.InetAddress;
 public class FtpDownloadRoute extends RouteBuilder {
     @Value("${ftp.server.uri}")
     private String ftpUri;
+
+
+    @Value("${sftp.server.uri}")
+    private String sftpUri;
 
     @Value("${ftp.local.data.dir}")
     private String localDir;
@@ -35,7 +35,7 @@ public class FtpDownloadRoute extends RouteBuilder {
     @Override
     public void configure() throws Exception {
 
-        from(ftpUri).to("file:c:/TestData/sunknew/sftp/data").process(tarProcessor)
+        from(ftpUri).to("file:" + localDir).process(tarProcessor)
                 //.process(new SyncSftpProcessor())
                 .log(LoggingLevel.INFO, log, "download file ${file:name} complete.");
     }

@@ -2,7 +2,6 @@ package com.asiainfo.commonftp.camel;
 
 import club.javalearn.date.utils.DateUtil;
 import com.asiainfo.commonftp.entity.FileInfo;
-import com.asiainfo.commonftp.util.DownLoadUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.camel.component.file.GenericFile;
 import org.apache.camel.component.file.GenericFileFilter;
